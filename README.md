@@ -15,9 +15,13 @@ Finalize Funding Requests: Once a funding request is approved, the campaign crea
 
 ## Development Environment
 Truffle v5.10.2 (core: 5.10.2)
+
 Ganache v7.8.0
+
 Solidity - 0.8.20 (solc-js)
+
 Node v18.12.1
+
 Web3.js v1.10.0
 
 ## For React 
