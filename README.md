@@ -36,3 +36,13 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+# License
+This project is licensed under the MIT License. 
+
+# Disclaimer
+This project is for educational and demonstration purposes only. Use it at your own risk. The authors of this project are not responsible for any loss of funds or damages resulting from the use of this application.
+
+# Acknowledgments
+This project was inspired by various crowdfunding and smart contract examples.
+Feel free to customize this template with more detailed information about your specific crowdfunding application, how to use it, and any additional features or improvements you plan to make. Providing clear instructions for installation, deployment, and usage will help others understand and utilize your smart contract application effectively.
+
