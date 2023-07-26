@@ -1,5 +1,4 @@
-const campaignfunds = artifacts.require("CampaignFund");
+const campaignfactory = artifacts.require("CampaignFundFactory");
 module.exports = (deployer) => {
-    const minContribution = 0;
-    deployer.deploy(campaignfunds, minContribution);
+    deployer.deploy(campaignfactory);
 }

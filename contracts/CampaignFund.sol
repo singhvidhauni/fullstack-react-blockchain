@@ -1,6 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+contract CampaignFundFactory {
+    address[] public deployedCampaignFunds;
+    function createCampaign(uint minContribution) public {
+        address newCampaignFund = address(new CampaignFund(minContribution, msg.sender));
+        deployedCampaignFunds.push(newCampaignFund);
+    }
+    function getDeployedCampaigns() public view returns(address[] memory) {
+        return deployedCampaignFunds;
+    }
+}
 contract CampaignFund {
     struct Request {
         string description;
@@ -18,8 +28,8 @@ contract CampaignFund {
     uint numRequests;
     uint public approversCount;
 
-    constructor(uint _minContribution) {
-        manager = msg.sender;
+    constructor(uint _minContribution, address _manager) {
+        manager = _manager;
         //here the value recieved is converted to wei by multiplying with 10^18
         minContribution = (_minContribution) * (10 ** 18);
     }
