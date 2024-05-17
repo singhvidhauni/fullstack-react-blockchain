@@ -23,9 +23,9 @@ contract CampaignFund {
     address public manager;
     uint public minContribution;
     mapping(address => bool) public approvers;
-    //Request[] public requests;
-    mapping(uint => Request) public requests;
-    uint numRequests;
+    Request[] public requests;
+    //mapping(uint => Request) public requests;
+    uint public numRequests;
     uint public approversCount;
 
     constructor(uint _minContribution, address _manager) {
@@ -41,14 +41,15 @@ contract CampaignFund {
     }
 
     function createRequest(string memory description, uint value, address recipient) public adminOnly {
-        Request storage newReq = requests[numRequests++];
+        Request storage newReq = requests[numRequests];
         newReq.description = description;
         newReq.value = value;
         newReq.recipient = payable(recipient);
         newReq.complete = false;
         newReq.approvalCount = 0;
         newReq.approvals[recipient] = false;
-    }
+        numRequests++;
+    }   
 
     function approveRequest(uint index) public {
         Request storage request = requests[index];
