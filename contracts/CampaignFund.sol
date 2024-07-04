@@ -3,14 +3,19 @@ pragma solidity ^0.8.0;
 
 contract CampaignFundFactory {
     address[] public deployedCampaignFunds;
+
     function createCampaign(uint minContribution) public {
-        address newCampaignFund = address(new CampaignFund(minContribution, msg.sender));
+        address newCampaignFund = address(
+            new CampaignFund(minContribution, msg.sender)
+        );
         deployedCampaignFunds.push(newCampaignFund);
     }
-    function getDeployedCampaigns() public view returns(address[] memory) {
+
+    function getDeployedCampaigns() public view returns (address[] memory) {
         return deployedCampaignFunds;
     }
 }
+
 contract CampaignFund {
     struct Request {
         string description;
@@ -35,21 +40,29 @@ contract CampaignFund {
     }
 
     function contribute() public payable {
-        require(msg.value >= minContribution,'The minimum contribution must be');
+        require(
+            msg.value >= minContribution,
+            "The minimum contribution must be"
+        );
         approvers[msg.sender] = true;
         approversCount++;
     }
 
-    function createRequest(string memory description, uint value, address recipient) public adminOnly {
-        Request storage newReq = requests[numRequests];
+    function createRequest(
+        string memory description,
+        uint value,
+        address recipient
+    ) public adminOnly {
+        require(recipient != address(0), "Invalid recipient address");
+        Request storage newReq = requests.push();
         newReq.description = description;
         newReq.value = value;
         newReq.recipient = payable(recipient);
         newReq.complete = false;
         newReq.approvalCount = 0;
-        newReq.approvals[recipient] = false;
+        //newReq.approvals[recipient] = false;
         numRequests++;
-    }   
+    }
 
     function approveRequest(uint index) public {
         Request storage request = requests[index];
@@ -61,15 +74,39 @@ contract CampaignFund {
 
     function finalizeRequest(uint index) public payable adminOnly {
         Request storage request = requests[index];
-        require(request.approvalCount > (approversCount / 2), "Not Enough approvals.");
+        require(
+            request.approvalCount > (approversCount / 2),
+            "Not Enough approvals."
+        );
         require(!request.complete, "Request has already been finalized.");
         request.complete = true;
         address payable recipientAddress = request.recipient;
         recipientAddress.transfer(request.value);
     }
 
+    function getSummary()
+        public
+        view
+        returns (uint, uint, uint, uint, address)
+    {
+        return (
+            minContribution,
+            address(this).balance,
+            numRequests,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return numRequests;
+    }
+
     modifier adminOnly() {
-        require(msg.sender == manager,'Only admin has access Rights to create requests');
+        require(
+            msg.sender == manager,
+            "Only admin has access Rights to create requests"
+        );
         _;
     }
 }

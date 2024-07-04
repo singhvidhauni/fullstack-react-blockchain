@@ -31,7 +31,6 @@ const sepoliaEndPoint = `${SEPOLIA_END_POINT}${PROJECT_ID}`;
 const campaignFundFactABI = JSON.parse(compiledCamFundFactory)[
   "CampaignFund.sol"
 ].CampaignFundFactory.abi;
-console.log("provider ");
 const campaignFundFactByteCode = JSON.parse(compiledCamFundFactory)[
   "CampaignFund.sol"
 ].CampaignFundFactory.evm.bytecode.object;
@@ -41,11 +40,8 @@ let accounts;
 let factory;
 const deployment = async () => {
   const providerUrl = web3.currentProvider.host;
-  console.log(web3.currentProvider.engine);
   try {
-    console.log("getting accounts ");
     accounts = await web3.eth.getAccounts();
-    console.log(accounts);
   } catch (err) {
     console.log(err);
   }
@@ -56,7 +52,6 @@ const deployment = async () => {
   } catch (err) {
     console.log(err);
   }
-  console.log(factory);
   process.exit(1);
 };
 deployment();
